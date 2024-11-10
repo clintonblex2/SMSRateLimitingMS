@@ -1,0 +1,147 @@
+<div class="dashboard-container dark-theme">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <h1>SMS Rate Limiter Monitor</h1>
+    <div class="view-selector">
+      <mat-button-toggle-group [value]="activeView" (change)="onViewChange($event.value)" class="custom-toggle-group">
+        <mat-button-toggle *ngFor="let option of viewOptions" [value]="option.value">
+          {{option.label}}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <form [formGroup]="filterForm" class="filters-form">
+        <ng-container *ngIf="activeView === 'phone'">
+          <mat-form-field appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <mat-select formControlName="phoneNumber" [disabled]="isLoading">
+              <mat-option [value]="">All Numbers</mat-option>
+              <mat-option *ngFor="let number of phoneNumbers$ | async" [value]="number">
+                {{number}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Start Date</mat-label>
+          <input matInput [matDatepicker]="startPicker" formControlName="startTime" (dateChange)="onStartDateSelected($event)">
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>End Date</mat-label>
+          <input matInput [matDatepicker]="endPicker" formControlName="endTime" (dateChange)="onEndDateSelected($event)">
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Stats Grid -->
+  <ng-container *ngIf="stats$ | async as stats">
+    <div class="stats-grid">
+      <!-- Current Usage Card -->
+      <mat-card class="stats-card">
+        <mat-card-header>
+          <mat-card-title>Current Usage</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="stats-content">
+            <div class="stat-item">
+              <div class="stat-info">
+                <span class="stat-label">Current Rate</span>
+                <span class="stat-value">{{stats.currentStats.currentCount}}/sec</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress"
+                     [style.width.%]="(stats.currentStats.currentCount / stats.currentStats.maximumRequests) * 100"
+                     [class.warning]="stats.currentStats.currentCount >= stats.currentStats.maximumRequests * 0.7"
+                     [class.danger]="stats.currentStats.currentCount >= stats.currentStats.maximumRequests * 0.9">
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-item">
+              <div class="stat-info">
+                <span class="stat-label">Remaining Capacity</span>
+                <span class="stat-value highlight">{{stats.currentStats.remainingCapacity}}</span>
+              </div>
+            </div>
+
+            <div class="stat-item">
+              <div class="stat-info">
+                <span class="stat-label">Max Rate</span>
+                <span class="stat-value">{{stats.currentStats.maximumRequests}}/sec</span>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Historical Stats Card -->
+      <mat-card class="stats-card">
+        <mat-card-header>
+          <mat-card-title>Historical Stats</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="stats-content">
+            <div class="stat-item">
+              <div class="stat-info">
+                <span class="stat-label">Total Requests</span>
+                <span class="stat-value">{{stats.historicalStats.totalRequests | number}}</span>
+              </div>
+            </div>
+
+            <div class="stat-item">
+              <div class="stat-info">
+                <span class="stat-label">Blocked Requests</span>
+                <span class="stat-value error">{{stats.historicalStats.totalBlocked | number}}</span>
+              </div>
+            </div>
+
+            <div class="stat-item">
+              <div class="stat-info">
+                <span class="stat-label">Peak Rate</span>
+                <span class="stat-value highlight">{{stats.historicalStats.peakRequestsPerSecond}}/sec</span>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Chart Card -->
+    <mat-card class="chart-card dark-theme">
+      <mat-card-header>
+        <mat-card-title>Messages per Second</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-container">
+          <apx-chart [series]="[{
+              name: 'Messages/Second',
+              data: transformChartData(stats.messagesPerSecond)
+            }]"
+                     [chart]="chartOptions.chart"
+                     [xaxis]="chartOptions.xaxis"
+                     [yaxis]="chartOptions.yaxis"
+                     [tooltip]="chartOptions.tooltip"
+                     [stroke]="chartOptions.stroke"
+                     [fill]="chartOptions.fill"
+                     [grid]="chartOptions.grid"
+                     [dataLabels]="chartOptions.dataLabels"
+                     [markers]="chartOptions.markers"
+                     [theme]="chartOptions.theme"
+                     [states]="chartOptions.states">
+          </apx-chart>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+</div>

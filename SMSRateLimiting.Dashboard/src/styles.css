@@ -1,0 +1,132 @@
+@import '@angular/material/prebuilt-themes/purple-green.css';
+
+body {
+  background-color: #111827;
+  color: #fff;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Form Field Outlines - using a subtle gray instead of purple */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #2d3546 !important; /* Subtle gray that matches the dark theme */
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #3f4860 !important; /* Slightly lighter on focus */
+}
+
+/* When field is focused */
+.mat-form-field.mat-focused .mat-form-field-outline-thick {
+  color: #3f4860 !important;
+}
+
+/* Label color */
+.mat-form-field-appearance-outline .mat-form-field-label {
+  color: #a3aed0 !important;
+}
+
+/* When field is focused - label color */
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #7b8fff !important; /* Using our highlight blue for focused state */
+}
+
+/* Input text */
+.mat-input-element {
+  color: #fff !important;
+}
+
+/* Datepicker toggle icon */
+.mat-datepicker-toggle {
+  color: #a3aed0 !important;
+}
+
+  .mat-datepicker-toggle.mat-datepicker-toggle-active {
+    color: #7b8fff !important;
+  }
+
+/* Select dropdown arrow */
+.mat-select-arrow {
+  color: #a3aed0 !important;
+}
+
+/* Selected value in select */
+.mat-select-value {
+  color: #fff !important;
+}
+
+/* Datepicker Overrides */
+.mat-datepicker-toggle-active {
+  color: #7b8fff !important;
+}
+
+.mat-calendar {
+  background: #1a2234 !important;
+}
+
+.mat-calendar-body-selected {
+  background-color: #7b8fff !important;
+  color: #fff !important;
+}
+
+.mat-calendar-body-cell-content {
+  color: #fff !important;
+}
+
+.mat-calendar-body-label {
+  color: #fff !important;
+}
+
+.mat-calendar-table-header {
+  color: #a3aed0 !important;
+}
+
+.mat-calendar-arrow {
+  border-top-color: #fff !important;
+}
+
+.mat-datepicker-content {
+  background-color: #1a2234 !important;
+}
+
+/* Select Dropdown Overrides */
+.mat-select-panel {
+  background: #1a2234 !important;
+}
+
+.mat-option {
+  color: #fff !important;
+  background: #1a2234 !important;
+}
+
+  .mat-option:hover:not(.mat-option-disabled) {
+    background: #2d3546 !important;
+  }
+
+/* Card Overrides */
+.mat-card {
+  background: #1a2234 !important;
+  color: #fff !important;
+}
+
+.mat-card-title {
+  color: #fff !important;
+}
+
+/* Button Toggle Overrides */
+.mat-button-toggle-group {
+  background: #1a2234 !important;
+  border: 1px solid #2d3546 !important;
+}
+
+.mat-button-toggle {
+  color: #a3aed0 !important;
+  background: #1a2234 !important;
+}
+
+.mat-button-toggle-checked {
+  background: #7b8fff !important;
+  color: #fff !important;
+}
+
+
