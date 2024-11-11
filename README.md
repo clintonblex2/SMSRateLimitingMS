@@ -109,7 +109,7 @@ ng serve
 
 ### Rate Limiting Endpoints
 
-![image](https://github.com/user-attachments/assets/05a206f3-14cf-4930-907a-ad1e49e794b5)
+![image](https://github.com/user-attachments/assets/eb2348d2-331a-4685-a3ae-4ee1703f6e9b)
 
 #### Check Message Rate Limit
 ```http
