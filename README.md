@@ -43,10 +43,7 @@ The solution consists of three main components:
 - Filtering capabilities
 - Responsive design
 
-```
 ![image](https://github.com/user-attachments/assets/d349338a-b708-464f-a9ed-007e0311c021)
-
-```
 
 ## Features
 
@@ -112,10 +109,7 @@ ng serve
 
 ### Rate Limiting Endpoints
 
-```
-![image](https://github.com/user-attachments/assets/46f0800c-a4f1-4dd1-b59c-a170ba194dcd)
-
-```
+![image](https://github.com/user-attachments/assets/05a206f3-14cf-4930-907a-ad1e49e794b5)
 
 #### Check Message Rate Limit
 ```http
@@ -140,11 +134,7 @@ Response:
 ## Monitoring Dashboard
 
 ### Account-Wide Monitoring
-
-```
 ![image](https://github.com/user-attachments/assets/15f29765-eda4-4349-bd10-34c51cf63f96)
-
-```
 
 Features:
 - Real-time message rate graph
@@ -154,10 +144,7 @@ Features:
 
 ### Per-Number Monitoring
 
-```
-https://github.com/user-attachments/assets/26c12dbe-f401-482a-9185-681be8c09986
-
-```
+![image](https://github.com/user-attachments/assets/26c12dbe-f401-482a-9185-681be8c09986)
 
 Features:
 - Individual phone number statistics
@@ -178,10 +165,9 @@ Capabilities:
 ### Unit Tests
 ```bash
 dotnet test
-
+```
 ![image](https://github.com/user-attachments/assets/35bb1761-3171-40cf-a7c2-a66f154852f2)
 
-```
 
 Performance metrics:
 - Response time under load
