@@ -81,7 +81,7 @@ The solution consists of three main components:
 ```bash
 - .NET Core SDK 8.0
 - Node.js 16+
-- Angular CLI 15+
+- Angular CLI 17+
 ```
 
 ### Installation
