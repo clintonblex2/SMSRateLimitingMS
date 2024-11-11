@@ -80,8 +80,8 @@ The solution consists of three main components:
 ### Prerequisites
 ```bash
 - .NET Core SDK 8.0
-- Node.js 16+
-- Angular CLI 17+
+- Node.js
+- Angular CLI
 ```
 
 ### Installation
@@ -174,16 +174,6 @@ Performance metrics:
 - Concurrent request handling
 - Resource utilization
 - Error rates
-
-## Performance
-
-### Benchmarks
-
-Key metrics:
-- Average response time: <5ms
-- Throughput: 10,000+ requests/second
-- Memory usage: <10MB under load
-- CPU utilization: <12% under normal load
 
 ## Resource Management
 
