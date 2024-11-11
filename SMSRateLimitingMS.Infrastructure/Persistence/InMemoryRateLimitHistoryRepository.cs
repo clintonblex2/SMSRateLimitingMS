@@ -8,7 +8,7 @@ namespace SMSRateLimitingMS.Infrastructure.Persistence
     public class InMemoryRateLimitHistoryRepository() : IRateLimitHistoryRepository
     {
         private readonly ConcurrentDictionary<(string PhoneNumber, DateTime Window), MessageRateAggregate> _aggregates = [];
-        
+
         public Task RecordMessageRateAsync(string phoneNumber, DateTime timestamp, bool wasSuccessful, CancellationToken cancellationToken = default)
         {
             var key = (phoneNumber, timestamp);

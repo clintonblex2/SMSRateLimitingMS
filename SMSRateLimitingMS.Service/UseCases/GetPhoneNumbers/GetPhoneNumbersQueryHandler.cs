@@ -14,7 +14,7 @@ namespace SMSRateLimitingMS.Application.UseCases.GetPhoneNumbers
             // Get message rate for the last 24 hours
             var messageRates = await _historyRepository.GetMessageRatesAsync(
                 phoneNumber: null, // Retrieve all phone numbers
-                startTime: DateTime.UtcNow.AddHours(-24), 
+                startTime: DateTime.UtcNow.AddHours(-24),
                 endTime: DateTime.UtcNow,
                 aggregationWindow: TimeSpan.FromSeconds(1),
                 cancellationToken);

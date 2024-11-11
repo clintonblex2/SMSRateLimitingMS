@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SMSRateLimitingMS.Domain.Entities
+﻿namespace SMSRateLimitingMS.Domain.Entities
 {
     public class MessageRateAggregate
     {
@@ -18,10 +12,10 @@ namespace SMSRateLimitingMS.Domain.Entities
         private MessageRateAggregate() { }
 
         public MessageRateAggregate(
-            string phoneNumber, 
+            string phoneNumber,
             DateTime timeWindow,
-            TimeSpan windowSize, 
-            int totalRequests, 
+            TimeSpan windowSize,
+            int totalRequests,
             int rejectedRequests)
         {
             PhoneNumber = phoneNumber;

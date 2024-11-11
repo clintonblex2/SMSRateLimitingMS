@@ -52,7 +52,7 @@ namespace SMSRateLimitingMS.Application.UseCases.CheckSMSRateLimit
                 // Check global account limit
                 var accountLimit = await _smsRateLimitRepository.GetOrCreateAsync(
                     Constants.GLOBAL_ACCOUNT,
-                    _settings.MaxMessagesPerAccountPerSecond, 
+                    _settings.MaxMessagesPerAccountPerSecond,
                     TimeSpan.FromSeconds(1));
 
                 // Check global account limit

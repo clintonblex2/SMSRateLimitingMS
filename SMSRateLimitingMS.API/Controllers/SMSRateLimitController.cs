@@ -10,7 +10,7 @@ namespace SMSRateLimitingMS.API.Controllers
     [Route("[controller]")]
     public class SMSRateLimitController(IMediator _mediator, ILogger<SMSRateLimitController> _logger) : ControllerBase
     {
-        [HttpPost(Name = "check-sms-rate-limit")]
+        [HttpPost("check")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(SMSRateLimitResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(string))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(SMSRateLimitResult))]

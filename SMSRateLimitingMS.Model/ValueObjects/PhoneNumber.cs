@@ -13,14 +13,14 @@ namespace SMSRateLimitingMS.Domain.ValueObjects
 
         public static Result<PhoneNumber> Create(string value)
         {
-            if (string.IsNullOrEmpty(value)) 
+            if (string.IsNullOrEmpty(value))
                 return Result<PhoneNumber>.Failure("Phone number cannot be empty");
 
             if (!value.StartsWith('+'))
                 return Result<PhoneNumber>.Failure("Phone number must start with '+'");
 
-            if (value.Length < 7 || value.Length > 14)
-                return Result<PhoneNumber>.Failure("Phone number length must be between 7 and 14 digits");
+            if (value.Length < 8 || value.Length > 15)
+                return Result<PhoneNumber>.Failure("Phone number length must be between 7 and 14 digits after '+'");
 
             if (!value.Skip(1).All(char.IsDigit))
                 return Result<PhoneNumber>.Failure("Phone number must only contain digits after '+'");

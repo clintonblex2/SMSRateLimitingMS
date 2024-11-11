@@ -40,7 +40,7 @@ namespace SMSRateLimitingMS.Domain.Entities
             lock (_lock)
             {
                 RemoveExpiredTimestamps(DateTime.UtcNow);
-                
+
                 var currentCount = _timestamps.Count;
                 var remainingCapacity = _maximumRequest - currentCount;
 

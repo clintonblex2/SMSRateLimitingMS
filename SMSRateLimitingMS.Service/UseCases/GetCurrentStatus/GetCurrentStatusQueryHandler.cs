@@ -6,7 +6,7 @@ using SMSRateLimitingMS.Application.Models.DTOs;
 namespace SMSRateLimitingMS.Application.UseCases.GetCurrentStatus
 {
     public class GetCurrentStatusQueryHandler(
-        IRateLimitRepository rateLimitRepository, 
+        IRateLimitRepository rateLimitRepository,
         ILogger<GetCurrentStatusQueryHandler> logger) : IRequestHandler<GetCurrentStatusQuery, IEnumerable<CurrentStatusDto>>
     {
         private readonly IRateLimitRepository _rateLimitRepository = rateLimitRepository;

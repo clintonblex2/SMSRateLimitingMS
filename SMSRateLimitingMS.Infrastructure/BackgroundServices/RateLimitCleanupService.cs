@@ -6,8 +6,8 @@ using SMSRateLimitingMS.Application.Settings;
 namespace SMSRateLimitingMS.Infrastructure.BackgroundServices
 {
     public class RateLimitCleanupService(
-        IRateLimitRepository smsRateLimitRepository, 
-        ILogger<RateLimitCleanupService> logger, 
+        IRateLimitRepository smsRateLimitRepository,
+        ILogger<RateLimitCleanupService> logger,
         SMSRateLimitSettings settings) : BackgroundService
     {
         private readonly IRateLimitRepository _smsRateLimitRepository = smsRateLimitRepository;
