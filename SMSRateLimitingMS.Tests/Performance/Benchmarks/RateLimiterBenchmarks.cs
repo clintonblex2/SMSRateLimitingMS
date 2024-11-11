@@ -14,7 +14,7 @@ namespace SMSRateLimitingMS.Tests.Performance.Benchmarks
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [SimpleJob(RuntimeMoniker.Net80,
-        invocationCount: 100000, // Increased to get better throughput metrics
+        invocationCount: 10000, // Increased to get better throughput metrics
         iterationCount: 5,
         warmupCount: 2)]
     public class RateLimiterBenchmarks
