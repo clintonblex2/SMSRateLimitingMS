@@ -8,6 +8,5 @@ namespace SMSRateLimitingMS.Application.Interfaces
         Task<RateLimit> GetOrCreateAsync(string id, int maximumRequests, TimeSpan window);
         Task CleanupInactiveAsync(TimeSpan threshold);
         Task<CounterStatistics?> GetRateLimitStatistics(string id);
-        Task<IEnumerable<RateLimit>> GetActiveRateLimits(TimeSpan? activeThreshold = null);
     }
 }

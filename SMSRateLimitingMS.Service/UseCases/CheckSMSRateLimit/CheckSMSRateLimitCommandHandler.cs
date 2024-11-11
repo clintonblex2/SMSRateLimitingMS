@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging;
 using SMSRateLimitingMS.Application.Helpers;
 using SMSRateLimitingMS.Application.Interfaces;
+using SMSRateLimitingMS.Application.Models.DTOs;
 using SMSRateLimitingMS.Application.Settings;
-using SMSRateLimitingMS.Domain.ValueObjects;
 
 namespace SMSRateLimitingMS.Application.UseCases.CheckSMSRateLimit
 {
@@ -12,24 +12,20 @@ namespace SMSRateLimitingMS.Application.UseCases.CheckSMSRateLimit
         IRateLimitHistoryRepository rateLimitLogRepository,
         ILogger<CheckSMSRateLimitCommandHandler> logger,
         SMSRateLimitSettings settings)
-        : IRequestHandler<CheckSMSRateLimitCommand, SMSRateLimitResult>
+        : IRequestHandler<CheckSMSRateLimitCommand, CheckSMSRateLimitDto>
     {
         private readonly IRateLimitRepository _smsRateLimitRepository = smsRateLimitRepository;
         private readonly IRateLimitHistoryRepository _rateLimitLogRepository = rateLimitLogRepository;
         private readonly ILogger<CheckSMSRateLimitCommandHandler> _logger = logger;
         private readonly SMSRateLimitSettings _settings = settings;
 
-        public async Task<SMSRateLimitResult> Handle(CheckSMSRateLimitCommand request, CancellationToken cancellationToken)
+        public async Task<CheckSMSRateLimitDto> Handle(CheckSMSRateLimitCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var phoneNumberValidation = PhoneNumber.Create(request.BusinessPhoneNumber);
-                if (!phoneNumberValidation.IsSuccessful)
-                    return new SMSRateLimitResult(false, phoneNumberValidation.Error);
-
                 // Check business phone number limit
                 var phoneNumberLimit = await _smsRateLimitRepository.GetOrCreateAsync(
-                    phoneNumberValidation.Value!.Value,
+                    request.BusinessPhoneNumber,
                     _settings.MaxMessagesPerBusinessPhoneNumberPerSecond,
                     TimeSpan.FromSeconds(1));
 
@@ -37,7 +33,6 @@ namespace SMSRateLimitingMS.Application.UseCases.CheckSMSRateLimit
                 if (!phoneNumberLimit.TryIncrementWindowCounter())
                 {
                     var stats = phoneNumberLimit.GetStats();
-                    string reason = $"Phone number rate limit exceeded ({stats.CurrentCount}/{stats.MaxRequests} messages per second)";
 
                     // Record the attempt for phone number
                     await _rateLimitLogRepository.RecordMessageRateAsync(
@@ -46,7 +41,7 @@ namespace SMSRateLimitingMS.Application.UseCases.CheckSMSRateLimit
                             wasSuccessful: false,
                             cancellationToken);
 
-                    return new SMSRateLimitResult(false, reason);
+                    return new CheckSMSRateLimitDto(false, $"Phone number rate limit exceeded ({stats.CurrentCount}/{stats.MaxRequests} messages per second)");
                 }
 
                 // Check global account limit
@@ -62,7 +57,6 @@ namespace SMSRateLimitingMS.Application.UseCases.CheckSMSRateLimit
                     phoneNumberLimit.DecrementCounter();
 
                     var stats = accountLimit.GetStats();
-                    var reason = $"Global account rate limit exceeded ({stats.CurrentCount}/{stats.MaxRequests} messages per second)";
 
                     // Record the attempt for phone number
                     await _rateLimitLogRepository.RecordMessageRateAsync(
@@ -71,7 +65,7 @@ namespace SMSRateLimitingMS.Application.UseCases.CheckSMSRateLimit
                         wasSuccessful: false,
                         cancellationToken);
 
-                    return new SMSRateLimitResult(false, reason);
+                    return new CheckSMSRateLimitDto(false, $"Global account rate limit exceeded ({stats.CurrentCount}/{stats.MaxRequests} messages per second)");
                 }
 
                 // Both limits passed
@@ -81,14 +75,14 @@ namespace SMSRateLimitingMS.Application.UseCases.CheckSMSRateLimit
                         wasSuccessful: true,
                         cancellationToken);
 
-                return new SMSRateLimitResult(true);
+                return new CheckSMSRateLimitDto(true);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred on check SMS rate limit for {phoneNumber}", request.BusinessPhoneNumber);
             }
 
-            return new SMSRateLimitResult(false, "Request processing failed.");
+            return new CheckSMSRateLimitDto(false, Constants.PROCESSING_ERROR);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace SMSRateLimitingMS.Application.UseCases.GetMonitoringStats
             {
                 // Get message rates from history
                 var messageRates = await _historyRepository.GetMessageRatesAsync(
-                    request.PhoneNumber ?? null, // Use account if no phone number specified
+                    request.PhoneNumber ?? null,
                     request.StartTime,
                     request.EndTime,
                     TimeSpan.FromSeconds(1),
@@ -88,7 +88,7 @@ namespace SMSRateLimitingMS.Application.UseCases.GetMonitoringStats
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while retrieving monitoring stats for {phoneNumber}", request.PhoneNumber ?? "Account");
+                _logger.LogError(ex, "An error occurred while retrieving monitoring stats for {phoneNumber}", request.PhoneNumber ?? Constants.GLOBAL_ACCOUNT);
             }
 
             return default;
