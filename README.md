@@ -166,7 +166,7 @@ Capabilities:
 ```bash
 dotnet test
 ```
-![image](https://github.com/user-attachments/assets/35bb1761-3171-40cf-a7c2-a66f154852f2)
+![image](https://github.com/user-attachments/assets/534084e4-16bb-4dba-81ea-4240b74b8004)
 
 
 Performance metrics:
