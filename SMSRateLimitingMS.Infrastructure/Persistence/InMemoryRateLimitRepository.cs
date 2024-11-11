@@ -26,16 +26,6 @@ namespace SMSRateLimitingMS.Infrastructure.Persistence
             return Task.FromResult<CounterStatistics?>(null);
         }
 
-        public Task<IEnumerable<RateLimit>> GetActiveRateLimits(TimeSpan? activeThreshold = null)
-        {
-            var threshold = activeThreshold ?? TimeSpan.FromHours(1);
-
-            var activeRateLimits = _smsRateLimits.Values
-                .Where(rl => !rl.IsInactive(threshold));
-
-            return Task.FromResult(activeRateLimits);
-        }
-
         public Task CleanupInactiveAsync(TimeSpan threshold)
         {
             var inactiveKeys = _smsRateLimits
