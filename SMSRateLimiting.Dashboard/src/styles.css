@@ -28,7 +28,7 @@ body {
 
 /* When field is focused - label color */
 .mat-form-field.mat-focused .mat-form-field-label {
-  color: #7b8fff !important; /* Using our highlight blue for focused state */
+  color: #7b8fff !important;
 }
 
 /* Input text */

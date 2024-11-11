@@ -6,7 +6,7 @@ using SMSRateLimitingMS.Application.Settings;
 using SMSRateLimitingMS.Application.UseCases.CheckSMSRateLimit;
 using SMSRateLimitingMS.Infrastructure.Persistence;
 
-namespace SMSRateLimitingMS.Tests.Performance
+namespace SMSRateLimitingMS.Tests.Performance.Benchmarks
 {
     [MemoryDiagnoser]
     [SimpleJob(BenchmarkDotNet.Jobs.RuntimeMoniker.Net80,
@@ -78,7 +78,7 @@ namespace SMSRateLimitingMS.Tests.Performance
             }
             catch (OperationCanceledException)
             {
-                
+
             }
         }
     }

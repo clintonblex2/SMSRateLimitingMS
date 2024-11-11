@@ -1,4 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Order;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using SMSRateLimitingMS.Application.Interfaces;
@@ -7,12 +9,13 @@ using SMSRateLimitingMS.Application.UseCases.CheckSMSRateLimit;
 using SMSRateLimitingMS.Application.UseCases.GetMonitoringStats;
 using SMSRateLimitingMS.Infrastructure.Persistence;
 
-namespace SMSRateLimitingMS.Tests.Performance
+namespace SMSRateLimitingMS.Tests.Performance.Benchmarks
 {
     [MemoryDiagnoser]
-    [SimpleJob(BenchmarkDotNet.Jobs.RuntimeMoniker.Net80,
+    [Orderer(SummaryOrderPolicy.FastestToSlowest)]
+    [SimpleJob(RuntimeMoniker.Net80,
+        invocationCount: 100000, // Increased to get better throughput metrics
         iterationCount: 5,
-        invocationCount: 3,
         warmupCount: 2)]
     public class RateLimiterBenchmarks
     {
@@ -80,24 +83,14 @@ namespace SMSRateLimitingMS.Tests.Performance
             }
         }
 
-        [Benchmark]
+        [Benchmark(OperationsPerInvoke = 1)]
         public async Task CheckRateLimit_SinglePhoneNumber()
         {
             var command = new CheckSMSRateLimitCommand(_phoneNumbers[0]);
             await _checkHandler.Handle(command, CancellationToken.None);
         }
 
-        [Benchmark]
-        public async Task CheckRateLimit_MultiplePhoneNumbers_Sequential()
-        {
-            for (int i = 0; i < 100; i++)
-            {
-                var command = new CheckSMSRateLimitCommand(_phoneNumbers[i]);
-                await _checkHandler.Handle(command, CancellationToken.None);
-            }
-        }
-
-        [Benchmark]
+        [Benchmark(OperationsPerInvoke = 100)] // Specify number of operations
         public async Task CheckRateLimit_MultiplePhoneNumbers_Parallel()
         {
             var tasks = Enumerable.Range(0, 100)
@@ -107,35 +100,33 @@ namespace SMSRateLimitingMS.Tests.Performance
             await Task.WhenAll(tasks);
         }
 
-        [Benchmark]
+        [Benchmark(OperationsPerInvoke = 1)]
         public async Task GetMonitoringStats_SinglePhoneNumber()
         {
             var query = new GetMonitoringStatsQuery(_startTime, _endTime, _phoneNumbers[0]);
             await _monitoringHandler.Handle(query, CancellationToken.None);
         }
 
-        [Benchmark]
+        [Benchmark(OperationsPerInvoke = 1)]
         public async Task GetMonitoringStats_Global()
         {
             var query = new GetMonitoringStatsQuery(_startTime, _endTime, null);
             await _monitoringHandler.Handle(query, CancellationToken.None);
         }
 
-        [Benchmark]
+        [Benchmark(OperationsPerInvoke = 10)] // 10 concurrent operations
         public async Task GetMonitoringStats_HighLoad()
         {
-            // Simulate high load by running multiple queries in parallel
             var tasks = new List<Task>();
             for (int i = 0; i < 10; i++)
             {
                 tasks.Add(GetMonitoringStats_SinglePhoneNumber());
-                if (i % 3 == 0) // Mix in some global stats queries
+                if (i % 3 == 0)
                 {
                     tasks.Add(GetMonitoringStats_Global());
                 }
             }
             await Task.WhenAll(tasks);
         }
-
     }
 }
